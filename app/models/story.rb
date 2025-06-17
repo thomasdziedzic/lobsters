@@ -45,6 +45,7 @@ class Story < ApplicationRecord
     class_name: "Link",
     inverse_of: :to_story,
     dependent: :destroy
+  has_many :follows, as: :followable
 
   scope :base, ->(user, unmerged: true) {
     q = includes(:hidings, :story_text, :user).not_deleted(user).mod_preload?(user)

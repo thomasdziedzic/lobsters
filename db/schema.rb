@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_05_141223) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_17_182536) do
   create_table "action_mailbox_inbound_emails", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.integer "status", default: 0, null: false
     t.string "message_id", null: false
@@ -112,6 +112,18 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_05_141223) do
     t.index ["banned_by_user_id"], name: "index_domains_on_banned_by_user_id"
     t.index ["domain"], name: "index_domains_on_domain", unique: true
     t.index ["token"], name: "index_domains_on_token", unique: true
+  end
+
+  create_table "follows", charset: "utf8mb4", collation: "utf8mb4_uca1400_ai_ci", force: :cascade do |t|
+    t.bigint "user_id", null: false, unsigned: true
+    t.string "followable_type", null: false
+    t.bigint "followable_id", null: false, unsigned: true
+    t.datetime "unfollowed_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["followable_type", "followable_id"], name: "index_follows_on_followable"
+    t.index ["unfollowed_at"], name: "index_follows_on_unfollowed_at"
+    t.index ["user_id"], name: "index_follows_on_user_id"
   end
 
   create_table "hat_requests", id: { type: :bigint, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
@@ -470,6 +482,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_05_141223) do
   add_foreign_key "comments", "stories", name: "comments_story_id_fk"
   add_foreign_key "comments", "users", name: "comments_user_id_fk"
   add_foreign_key "domains", "users", column: "banned_by_user_id"
+  add_foreign_key "follows", "users"
   add_foreign_key "hat_requests", "users", name: "hat_requests_user_id_fk"
   add_foreign_key "hats", "users", column: "granted_by_user_id", name: "hats_granted_by_user_id_fk"
   add_foreign_key "hats", "users", name: "hats_user_id_fk"
