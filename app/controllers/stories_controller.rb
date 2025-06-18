@@ -226,13 +226,14 @@ class StoriesController < ApplicationController
 
     if @story.save
       author_follow = @story.follows.find_by(user: @user)
-      if author_follow.nil? && story_params[:user_is_following]
+
+      # match the story poster's follow with the user_is_following? attribute
+      if author_follow.nil? && @story.user_is_following?
         @story.follows.create!(user: @user)
-      elsif author_follow && author_follow.unfollowed_at && story_params[:user_is_following]
-        author_follow.update(unfollowed_at: nil)
-      elsif author_follow && author_follow.unfollowed_at.nil? && !story_params[:user_is_following]
-        author_follow.update(unfollowed_at: DateTime.now)
+      elsif author_follow && !@story.user_is_following?
+        author_follow.destroy
       end
+
       redirect_to Routes.title_path @story
     else
       render action: "edit"

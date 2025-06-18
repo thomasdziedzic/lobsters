@@ -118,11 +118,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_17_182536) do
     t.bigint "user_id", null: false, unsigned: true
     t.string "followable_type", null: false
     t.bigint "followable_id", null: false, unsigned: true
-    t.datetime "unfollowed_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["followable_type", "followable_id"], name: "index_follows_on_followable"
-    t.index ["unfollowed_at"], name: "index_follows_on_unfollowed_at"
     t.index ["user_id"], name: "index_follows_on_user_id"
   end
 

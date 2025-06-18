@@ -40,7 +40,7 @@ class NotifyCommentJob < ApplicationJob
 
     if comment.parent_comment_id.nil?
       # top level comment
-      comment.story.follows.include(:user).active.filter do |follow|
+      comment.story.follows.include(:user).filter do |follow|
         commented_by_follower = comment.user.id == follow.user.id
 
         !commented_by_follower && follow.user.is_active?
@@ -49,7 +49,7 @@ class NotifyCommentJob < ApplicationJob
       end
     else
       # comment to a comment
-      comment.parent_comment.follows.include(:user).active.filter do |follow|
+      comment.parent_comment.follows.include(:user).filter do |follow|
         replied_to_own_comment = comment.parent_comment.user.id == follow.user.id
 
         !replied_to_own_comment && follow.user.is_active?
