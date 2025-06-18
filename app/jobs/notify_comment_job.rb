@@ -38,24 +38,14 @@ class NotifyCommentJob < ApplicationJob
   def users_following_thread(comment)
     ret = Set.new
 
-    if comment.parent_comment_id.nil?
-      # top level comment
-      comment.story.follows.includes(:user).filter do |follow|
-        commented_by_follower = comment.user.id == follow.user.id
+    followable = comment.parent_comment || comment.story
 
-        !commented_by_follower && follow.user.is_active?
-      end.each do |follow|
-        ret << follow.user
-      end
-    else
-      # comment to a comment
-      comment.parent_comment.follows.includes(:user).filter do |follow|
-        replied_to_own_comment = comment.user.id == follow.user.id
+    followable.follows.includes(:user).filter do |follow|
+      commented_by_follower = comment.user.id == follow.user.id
 
-        !replied_to_own_comment && follow.user.is_active?
-      end.each do |follow|
-        ret << follow.user
-      end
+      !commented_by_follower && follow.user.is_active?
+    end.each do |follow|
+      ret << follow.user
     end
 
     ret
