@@ -120,6 +120,14 @@ class FakeDataGenerator
     end
     puts
 
+    print "Read Ribbons "
+    read_ribbons = []
+    stories.each do |story|
+      print "."
+      read_ribbons << ReadRibbon.create!(user_id: story.user_id, story_id: story.id)
+    end
+    puts
+
     # The stories are created here and deleted after adding comments and other interactions.
     deleted_stories = []
     (@stories_count / 10).times do |i|
