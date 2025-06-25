@@ -30,6 +30,7 @@ class StoriesController < ApplicationController
       Story.transaction do
         if @story.save && (!@story.is_resubmit? || @comment.save)
           ReadRibbon.where(user: @user, story: @story).first_or_create!
+          @story.subscriptions.create!(user: @user, unsubscribed_at: story_params[:user_is_following] == "true" ? nil : @story.created_at)
           redirect_to Routes.title_path @story
         else
           raise ActiveRecord::Rollback
@@ -221,9 +222,19 @@ class StoriesController < ApplicationController
     @story.editor = @user
     update_story_attributes
 
-    if @story.save
+    begin
+      Story.transaction do
+        @story.save!
+
+        subscription = @story.subscriptions.find_by(user: @user)
+        if subscription.nil?
+          @story.subscriptions.create!(user: @user, unsubscribed_at: story_params[:user_is_following] == "true" ? nil : @story.created_at)
+        else
+          subscription.update!(unsubscribed_at: story_params[:user_is_following] == "true" ? nil : @story.created_at)
+        end
+      end
       redirect_to Routes.title_path @story
-    else
+    rescue
       render action: "edit"
     end
   end

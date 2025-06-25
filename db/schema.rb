@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_05_141223) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_25_125810) do
   create_table "action_mailbox_inbound_emails", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.integer "status", default: 0, null: false
     t.string "message_id", null: false
@@ -359,6 +359,17 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_05_141223) do
     t.index ["title"], name: "index_story_texts_on_title", type: :fulltext
   end
 
+  create_table "subscriptions", charset: "utf8mb4", collation: "utf8mb4_uca1400_ai_ci", force: :cascade do |t|
+    t.bigint "user_id", null: false, unsigned: true
+    t.string "subscribable_type", null: false
+    t.bigint "subscribable_id", null: false, unsigned: true
+    t.datetime "unsubscribed_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["subscribable_type", "subscribable_id"], name: "index_subscriptions_on_subscribable"
+    t.index ["user_id"], name: "index_subscriptions_on_user_id"
+  end
+
   create_table "suggested_taggings", id: { type: :bigint, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "story_id", null: false, unsigned: true
     t.bigint "tag_id", null: false, unsigned: true
@@ -504,6 +515,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_05_141223) do
   add_foreign_key "stories", "origins"
   add_foreign_key "stories", "stories", column: "merged_story_id", name: "stories_merged_story_id_fk"
   add_foreign_key "stories", "users", name: "stories_user_id_fk"
+  add_foreign_key "subscriptions", "users"
   add_foreign_key "suggested_taggings", "stories", name: "suggested_taggings_story_id_fk"
   add_foreign_key "suggested_taggings", "tags", name: "suggested_taggings_tag_id_fk"
   add_foreign_key "suggested_taggings", "users", name: "suggested_taggings_user_id_fk"
