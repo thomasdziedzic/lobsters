@@ -56,6 +56,7 @@ class User < ApplicationRecord
     class_name: "Hat",
     inverse_of: :user
   has_many :subscriptions
+  has_many :notifications
 
   include Token
 

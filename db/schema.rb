@@ -269,6 +269,18 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_25_125810) do
     t.index ["user_id"], name: "index_moderations_on_user_id"
   end
 
+  create_table "notifications", id: { type: :bigint, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_uca1400_ai_ci", force: :cascade do |t|
+    t.bigint "user_id", null: false, unsigned: true
+    t.string "notifiable_type", null: false
+    t.bigint "notifiable_id", null: false, unsigned: true
+    t.datetime "read_at"
+    t.datetime "notified_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["notifiable_type", "notifiable_id"], name: "index_notifications_on_notifiable"
+    t.index ["user_id", "notifiable_type", "notifiable_id"], name: "idx_on_user_id_notifiable_type_notifiable_id_ffac34041e", unique: true
+  end
+
   create_table "origins", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "domain_id", null: false
     t.string "identifier", null: false
@@ -359,7 +371,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_25_125810) do
     t.index ["title"], name: "index_story_texts_on_title", type: :fulltext
   end
 
-  create_table "subscriptions", charset: "utf8mb4", collation: "utf8mb4_uca1400_ai_ci", force: :cascade do |t|
+  create_table "subscriptions", id: { type: :bigint, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_uca1400_ai_ci", force: :cascade do |t|
     t.bigint "user_id", null: false, unsigned: true
     t.string "subscribable_type", null: false
     t.bigint "subscribable_id", null: false, unsigned: true
@@ -367,7 +379,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_25_125810) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["subscribable_type", "subscribable_id"], name: "index_subscriptions_on_subscribable"
-    t.index ["user_id"], name: "index_subscriptions_on_user_id"
+    t.index ["user_id", "subscribable_type", "subscribable_id"], name: "idx_on_user_id_subscribable_type_subscribable_id_fb68f3bd3a", unique: true
   end
 
   create_table "suggested_taggings", id: { type: :bigint, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
@@ -505,6 +517,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_25_125810) do
   add_foreign_key "moderations", "tags", name: "moderations_tag_id_fk"
   add_foreign_key "moderations", "users"
   add_foreign_key "moderations", "users", column: "moderator_user_id", name: "moderations_moderator_user_id_fk"
+  add_foreign_key "notifications", "users"
   add_foreign_key "origins", "domains"
   add_foreign_key "origins", "users", column: "banned_by_user_id"
   add_foreign_key "read_ribbons", "stories", name: "read_ribbons_story_id_fk"

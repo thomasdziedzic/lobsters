@@ -27,6 +27,7 @@ class Comment < ApplicationRecord
     inverse_of: :to_comment,
     dependent: :destroy
   has_many :subscriptions, as: :subscribable
+  has_many :notifications, as: :notifiable
 
   include Token
   attr_accessor :current_vote, :previewing, :vote_summary
