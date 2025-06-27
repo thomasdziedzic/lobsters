@@ -160,7 +160,6 @@ class StoriesController < ApplicationController
       end
     end
 
-    @user.try(:clear_unread_replies!)
     @comments = Comment.story_threads(@story).for_presentation
 
     @title = @story.title

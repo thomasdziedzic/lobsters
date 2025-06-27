@@ -1,0 +1,14 @@
+<%= render partial: 'messages/subnav' %>
+
+<ol>
+  <% @notifications.each do |notification| %>
+    <li>
+      <% case notification.notifiable %>
+      <% when Comment %>
+        comment
+      <% when Message %>
+        message
+      <% end %>
+    </li>
+  <% end %>
+</ol>

@@ -63,8 +63,6 @@ task create_missing_subscriptions_and_notifications: :environment do
     end
     finished_at = Time.current
     puts "Created missing notifications for child comments of comments, the time it took was #{finished_at - started_at} seconds"
-
-    raise ActiveRecord::Rollback
   end
 
   # sample run with my bulk dataset took ~8 minutes:
