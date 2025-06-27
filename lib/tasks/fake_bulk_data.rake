@@ -229,6 +229,10 @@ def generate_read_ribbons_for_comment_authors(stats)
   end
 end
 
+def set_all_users_following_their_story(stats)
+  Story.update_all(user_is_following: true)
+end
+
 desc "Generates fake bulk data"
 task fake_bulk_data: :environment do
   stats = GenStats.new
@@ -243,4 +247,5 @@ task fake_bulk_data: :environment do
   # time_it { generate_read_ribbons(stats) }
   # time_it { generate_read_ribbons_for_story_authors(stats) }
   # time_it { generate_read_ribbons_for_comment_authors(stats) }
+  # time_it { set_all_users_following_their_story(stats) }
 end

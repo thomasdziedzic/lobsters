@@ -16,7 +16,6 @@ class CreateSubscriptions < ActiveRecord::Migration[8.0]
       t.references :user, null: false, foreign_key: true, type: :bigint, unsigned: true, index: false
       t.references :notifiable, polymorphic: true, null: false, type: :bigint, unsigned: true
       t.datetime :read_at
-      t.datetime :notified_at
 
       t.timestamps
 

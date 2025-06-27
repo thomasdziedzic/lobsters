@@ -9,7 +9,7 @@ class NotifyMessageJob < ApplicationJob
   end
 
   def create_notification(message)
-    message.recipient.notifications.create!(notifiable: message)
+    message.recipient.notifications.create(notifiable: message)
   end
 
   def deliver_message_notifications(message)
