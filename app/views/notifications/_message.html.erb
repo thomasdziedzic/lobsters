@@ -1,0 +1,15 @@
+<div class="message">
+  <div class="message-head">
+    ✉ received from
+    <%= inline_avatar_for @user, message.author %> <%= styled_user_link message.author %>
+    <%= how_long_ago_label(message.created_at) %>
+    |
+    <a href="/messages/<%= message.short_id %>">reply</a>
+  </div>
+  <div class="message-subject" style="<%= message.has_been_read? ? "" : "font-weight: bold;" %>"s>
+    <%= message.subject %>
+  </div>
+  <div class="message-body">
+    <%= message.body %>
+  </div>
+</div>

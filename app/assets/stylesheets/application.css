@@ -446,6 +446,36 @@ ol.comments1 > li.comments_subtree > ol.comments {
 	padding-left: 0;
 }
 
+ol.comments > li.comments_subtree > div.message {
+	padding-top: 0.4em;
+    padding-bottom: 0.4em;
+	margin-left: 32px;
+}
+
+ol.comments > li.comments_subtree > div.message > div.message-head {
+	color: var(--color-fg-contrast-4-5);
+	font-size: 9.5pt;
+}
+
+ol.comments > li.comments_subtree > div.message > div.message-head img.avatar {
+	vertical-align: middle;
+}
+
+ol.comments > li.comments_subtree > div.message > div.message-head a {
+	color: var(--color-fg-contrast-4-5);
+	text-decoration: none;
+}
+
+ol.comments > li.comments_subtree > div.message > div.message-subject {
+	color: var(--color-fg-contrast-4-5);
+	font-size: 9.5pt;
+}
+
+ol.comments > li.comments_subtree > div.message > div.message-subject a {
+	color: var(--color-fg-contrast-4-5);
+	text-decoration: none;
+}
+
 div.voters {
 	float: left;
 	margin-top: 0px;
@@ -805,8 +835,8 @@ div.story_text blockquote {
 }
 
 /* un-italicize italics inside a blockquote */
-div.comment_text blockquote em, 
-div.markdown_help blockquote em, 
+div.comment_text blockquote em,
+div.markdown_help blockquote em,
 div.story_text blockquote em {
 	font-style: normal
 }
